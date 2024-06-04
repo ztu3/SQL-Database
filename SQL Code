@@ -1,0 +1,171 @@
+#create tables
+
+CREATE TABLE Event (
+    EventID INT PRIMARY KEY,
+    EventDescription TEXT,
+    EventName VARCHAR(255),
+    StartDate DATE,
+    EndDate DATE
+);
+
+CREATE TABLE Product (
+    ProductID INT PRIMARY KEY,
+    ProductName VARCHAR(255),
+    WholesaleCost DECIMAL(10, 2),
+    MinPrice DECIMAL(10, 2)
+);
+
+CREATE TABLE ProductSale (
+    SaleID INT,
+    ProductID INT,
+    Quantity INT,
+    FinalPrice DECIMAL(10, 2),
+    PRIMARY KEY (SaleID, ProductID),
+    FOREIGN KEY (SaleID) REFERENCES Sale(SaleID),
+    FOREIGN KEY (ProductID) REFERENCES Product(ProductID)
+);
+
+CREATE TABLE Salesperson (
+    SalespersonID INT PRIMARY KEY,
+    Address VARCHAR(255),
+    FirstName VARCHAR(255),
+    LastName VARCHAR(255),
+    PhoneNumber VARCHAR(20)
+);
+
+CREATE TABLE SalespersonShift (
+    ShiftID INT PRIMARY KEY,
+    SalespersonID INT,
+    BoothID INT,
+    StartDate DATE,
+    EndDate DATE,
+    FOREIGN KEY (SalespersonID) REFERENCES Salesperson(SalespersonID),
+    FOREIGN KEY (BoothID) REFERENCES Booth(BoothID)
+);
+
+CREATE TABLE Venue (
+    VenueID INT PRIMARY KEY,
+    VenueName VARCHAR(255),
+    Address VARCHAR(255)
+);
+
+CREATE TABLE Booth (
+    BoothID INT PRIMARY KEY,
+    Location VARCHAR(255),
+    EventID INT,
+    FOREIGN KEY (EventID) REFERENCES Event(EventID)
+);
+
+CREATE TABLE Category (
+    CategoryID INT PRIMARY KEY,
+    CategoryType VARCHAR(255),
+    VenueID INT,
+    FOREIGN KEY (VenueID) REFERENCES Venue(VenueID)
+);
+
+CREATE TABLE Sale (
+    SaleID INT PRIMARY KEY,
+    SaleTime DATETIME
+);
+
+
+#Database Modification: Insert Data Value
+
+
+INSERT INTO Event (eventID, eventdescription, eventname, startdate, enddate)
+VALUES
+(1, 'casual', 'meetspopups', '2015-05-16', '2015-07-04'),
+(2, 'giveaways', 'blackfriday', '2015-05-31', '2015-06-24'),
+(3, 'businessjoints', 'boothsgathering', '2015-05-26', '2015-09-01');
+
+
+INSERT INTO Product (ID, productname, wholesalecost, minprice)
+VALUES
+  (1, 'bubbleguns', 15, 9),
+  (2, 'coolingtowel', 20, 6),
+  (3, 'heatingpads', 6, 3),
+  (4, 'emojipillows', 5, 1),
+  (5, 'remotecontrolls', 7, 2);
+
+INSERT INTO Productsale (quantity, finalprice)
+VALUES
+  (2, 2000),
+  (10, 15000),
+  (29, 200000);
+
+INSERT INTO Salesperson (ID, address, firstname, lastname, phonenumber)
+VALUES
+  (1, '20 Bay Street', 'mary', 'jain', '3124657890'),
+  (2, '55 Ave NW, Suite 201', 'prisca', 'kidoti', '772896345'),
+  (3, '5th Avenue SW', 'carine', 'jones', '0672342678'),
+  (4, '705 Fountain St N.', 'aida', 'george', '8832769404');
+
+INSERT INTO SalespersonShift (ID, startdate, enddate)
+VALUES
+  (1, '2015-05-21', '2016-10-30'),
+  (2, '2015-06-01', '2015-09-21'),
+  (3, '2015-05-16', '2015-08-01'),
+  (4, '2016-06-03', '2016-08-28');
+
+INSERT INTO Venue (venuename, address)
+VALUES
+  ('the hallway', 'Rockwood Drive'),
+  ('masterhouse', '31st Street Ontario'),
+  ('painthouse', '33rd Street'),
+  ('the meet garage', '34 Dundalk Drive');
+
+INSERT INTO Booth (ID, location)
+VALUES
+  (1, '4 winds drive ontario'),
+  (2, '10 canlish road'),
+  (3, 'abell street'),
+  (4, '6 nations avenue');
+
+INSERT INTO Category (ID, categorytype)
+VALUES                                
+  (1, 'trade show'),                                                             
+  (2, 'rib fest'),
+  (3, 'water front festival'),
+  (4, 'music festival'),
+  (5, 'street festival'),
+  (6, 'beer festival');
+
+INSERT INTO Sale (saleID, saletime)
+VALUES
+  (1, '14:00'),
+  (2, '20:00'),
+  (3, '23:00'),
+  (4, '14:00'),
+  (5, '21:30');
+
+
+#SQL Commands for Database
+
+
+#Select the columns "ID" and "location" from the table "Booth" 
+#Order the result by ID column in descending order
+
+SELECT ID, location
+FROM Booth
+ORDER BY ID DESC;
+
+#Update "ID"=1 "location" from "4 wind drive ontario" to "4 wind drive"
+UPDATE booth
+SET ID = 1, location = '4 wind drive'
+WHERE location = '4 wind drive ontario';
+
+#Delete "ID"=1 
+
+DELETE FROM booth
+WHERE ID = 1;
+
+#Select all columns from the table product where the product name column starts with 'c'
+#Order the results by ID column in descending order
+
+SELECT *
+FROM Product
+WHERE "product name" LIKE 'c%'
+ORDER BY ID DESC;
+
+
+
